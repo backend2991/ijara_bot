@@ -1,38 +1,44 @@
 import aiosqlite
 
-async def init_db():
-    async with aiosqlite.connect("rent_bot.db") as db:
-        await db.execute("""
+DB_NAME = "rental_bot.db"
+
+class Database:
+    def __init__(self):
+        self.db = None
+
+    async def connect(self):
+        self.db = await aiosqlite.connect(DB_NAME)
+        self.db.row_factory = aiosqlite.Row
+        await self.db.execute("""
             CREATE TABLE IF NOT EXISTS ads (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 user_id INTEGER,
-                building_type TEXT,
-                duration TEXT,
-                region TEXT,
-                district TEXT,
-                rooms TEXT,
-                area TEXT,
-                repair TEXT,
-                amenities TEXT,
-                photos TEXT,
-                phone TEXT,
-                status TEXT DEFAULT 'active'
+                b_type TEXT, duration TEXT, region TEXT, district TEXT,
+                rooms TEXT, area TEXT, repair TEXT, amenities TEXT,
+                photo_id TEXT, phone TEXT
             )
         """)
-        await db.commit()
+        await self.db.commit()
 
-async def save_ad(data, user_id):
-    async with aiosqlite.connect("rent_bot.db") as db:
-        await db.execute("""
-            INSERT INTO ads (user_id, building_type, duration, region, district, rooms, area, repair, amenities, photos, phone)
+    async def save_ad(self, user_id, data, phone):
+        query = """
+            INSERT INTO ads (user_id, b_type, duration, region, district, rooms, area, repair, amenities, photo_id, phone)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (user_id, data['building_type'], data['duration'], data['region'], 
-              data['district'], data['rooms'], data['area'], data['repair'], 
-              data['amenities'], data['photos'], data['phone']))
-        await db.commit()
+        """
+        params = (
+            user_id, data['building_type'], data['duration'], data['region'],
+            data['district'], data['rooms'], data['area'], data['repair'],
+            data['amenities'], data['photo_id'], phone
+        )
+        await self.db.execute(query, params)
+        await self.db.commit()
 
-async def get_user_ads(user_id):
-    async with aiosqlite.connect("rent_bot.db") as db:
-        db.row_factory = aiosqlite.Row
-        async with db.execute("SELECT * FROM ads WHERE user_id = ?", (user_id,)) as cursor:
-            return await cursor.fetchall()
+    async def get_user_ads(self, user_id):
+        cursor = await self.db.execute("SELECT * FROM ads WHERE user_id = ?", (user_id,))
+        return await cursor.fetchall()
+
+    async def close(self):
+        if self.db:
+            await self.db.close()
+
+db = Database()
