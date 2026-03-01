@@ -1,10 +1,13 @@
-from aiogram.fsm.state import StatesGroup, State
+from aiogram.fsm.state import State, StatesGroup
 
-class AdStates(StatesGroup):
-    type = State()
-    location = State()
-    rooms_and_area = State()
-    price = State()
-    description = State()
-    photo = State()
+class AdCreation(StatesGroup):
+    building_type = State()
+    duration = State()
+    region = State()
+    district = State()
+    rooms = State()
+    area = State()
+    repair = State()
+    amenities = State()
+    photos = State()
     phone = State()
