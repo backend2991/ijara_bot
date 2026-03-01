@@ -29,15 +29,22 @@ def building_type_kb():
     return get_reply_kb(types, cols=2)
 
 def duration_kb():
-    durations = ["Kunlik", "Haftalik", "Oylik", "6 oy", "1 yil", "Uzoq muddatli", "Mavsumiy"]
+    durations = ["Kunlik", "Haftalik", "Oylik", "6 oy", "1 yil", "Uzoq muddatli", "Faqat iyul-avgust", "Mavsumiy"]
     return get_reply_kb(durations, cols=2)
 
 def region_kb():
-    regions = ["Toshkent sh.", "Toshkent vil.", "Samarqand", "Buxoro", "Andijon", "Farg'ona", "Namangan", "Navoiy", "Qashqadaryo", "Surxondaryo", "Jizzax", "Sirdaryo", "Xorazm", "Qoraqalpog'iston"]
+    regions = [
+        "Toshkent sh.", "Toshkent vil.", "Samarqand", "Buxoro", "Andijon", "Farg'ona", 
+        "Namangan", "Navoiy", "Qashqadaryo", "Surxondaryo", "Jizzax", "Sirdaryo", "Xorazm", "Qoraqalpog'iston"
+    ]
     return get_reply_kb(regions, cols=2)
 
 def district_kb():
-    districts = ["Chilonzor", "Yunusobod", "M.Ulug'bek", "Mirobod", "Shayxontohur", "Olmazor", "Sergeli", "Yakkasaroy", "Uchtepa", "Bektemir", "Yashnobod", "Yangihayot", "Qibray", "Zangiota", "Chirchiq", "G'azalkent", "Keles", "Nazarbek", "To'ytepa", "Piskent"]
+    districts = [
+        "Chilonzor", "Yunusobod", "M.Ulug'bek", "Mirobod", "Shayxontohur", "Olmazor", 
+        "Sergeli", "Yakkasaroy", "Uchtepa", "Bektemir", "Yashnobod", "Yangihayot", 
+        "Qibray", "Zangiota", "Chirchiq", "G'azalkent", "Keles", "Nazarbek", "To'ytepa", "Piskent"
+    ]
     return get_reply_kb(districts, cols=2)
 
 def rooms_kb():
@@ -52,6 +59,11 @@ def repair_kb():
     repairs = ["Evro", "Lux", "Neo-Classic", "High-tech", "O'rtacha", "Toza", "Ta'mirtalab", "Yangi", "Kosmetik", "Mualliflik loyihasi"]
     return get_reply_kb(repairs, cols=2)
 
-def amenities_simple_kb():
-    items = ["Konditsioner", "Muzlatgich", "Televizor", "Wi-Fi", "Mebel", "Kir yuvish m.", "Lift", "Avtoturargoh"]
-    return get_reply_kb(items, cols=2)
+def amenities_kb():
+    all_items = [
+        "Konditsioner", "Muzlatgich", "Televizor", "Kir yuvish m.", "Wi-Fi", 
+        "Lift", "Mebel", "Mikroto'lqinli pech", "Idish yuvish m.", "Vanna", 
+        "Balkon", "Avtoturargoh", "Maktab yaqin", "Bog'cha yaqin", "Metro yaqin", 
+        "Bozor yaqin", "Domofon", "Xavfsizlik", "Hovuz", "Sauna"
+    ]
+    return get_reply_kb(all_items, cols=2)
