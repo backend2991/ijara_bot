@@ -7,8 +7,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
-from db import db, amenities_kb
-
+from db import db 
+from buttons import amenities_kb
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
@@ -113,7 +113,7 @@ async def set_area(message: types.Message, state: FSMContext):
 async def set_repair(message: types.Message, state: FSMContext):
     await state.update_data(repair=message.text)
     await state.set_state(AdCreation.amenities)
-    await message.answer("Qulayliklarni yozing (Konditsioner, Wi-Fi...):", reply_markup=amenities_kb)
+    await message.answer("Qulayliklarni yozing (Konditsioner, Wi-Fi...):", reply_markup=amenities_kb())
 
 @dp.message(AdCreation.amenities)
 async def set_amenities(message: types.Message, state: FSMContext):
