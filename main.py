@@ -119,7 +119,7 @@ async def set_repair(message: types.Message, state: FSMContext):
 async def set_amenities(message: types.Message, state: FSMContext):
     await state.update_data(amenities=message.text)
     await state.set_state(AdCreation.photos)
-    await message.answer("Uy rasmiga yuboring:")
+    await message.answer("Uy rasmiga yuboring:", reply_markup=ReplyKeyboardRemove())
 
 @dp.message(AdCreation.photos, F.photo)
 async def set_photo(message: types.Message, state: FSMContext):
