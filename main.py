@@ -16,7 +16,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-TOKEN = "8617267923:AAFem8KDMKHt1mBUCEesamTxsWSME-5aSJY"
+TOKEN = "8617267923:AAEwKt5YB_awwER4Ly46e4dMX0PxdzdqjbY"
 PROXY_URL = 'http://proxy.server:3128'
 
 class AdCreation(StatesGroup):
