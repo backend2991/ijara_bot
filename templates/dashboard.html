@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaktika | Kitoblar Olami</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg: #f1f5f9;
+            --text-dark: #1e293b;
+            --card-bg: #ffffff;
+            --glass: rgba(255, 255, 255, 0.85);
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-dark);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* --- Navbar --- */
+        .navbar {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            padding: 15px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .profile-trigger {
+            width: 45px; height: 45px;
+            background: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+            color: white;
+            font-size: 1.3rem;
+        }
+
+        .profile-trigger:hover {
+            transform: scale(1.05);
+            background: var(--primary-hover);
+        }
+
+        /* --- Search Section --- */
+        .search-container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .search-wrapper {
+            display: flex;
+            gap: 12px;
+            background: white;
+            padding: 8px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            background: transparent;
+        }
+
+        .btn-search {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        /* --- Books Grid --- */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 20px 8%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .book-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
+        }
+
+        .book-img-box {
+            width: 100%;
+            height: 220px;
+            background: #f1f5f9;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .book-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .sale-badge {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: #ef4444;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            z-index: 10;
+        }
+
+        .card-content { padding: 20px; flex-grow: 1; }
+
+        .janr-tag {
+            font-size: 0.7rem;
+            background: #e0e7ff;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .book-title { font-size: 1.3rem; margin: 12px 0 5px; font-weight: 600; }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .price-tag { color: var(--primary); font-weight: 700; font-size: 1.1rem; }
+
+        .btn-open {
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            width: 35px; height: 35px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.3s;
+        }
+
+        /* --- Profile Modal & Overlay --- */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(4px);
+            z-index: 900;
+        }
+
+        .profile-modal {
+            display: none;
+            position: fixed;
+            top: 85px; right: 8%;
+            width: 320px;
+            background: white;
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            z-index: 1001;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-logout {
+            display: block; margin-top: 20px;
+            background: #fee2e2; color: #ef4444;
+            text-decoration: none; padding: 12px;
+            border-radius: 15px; text-align: center;
+            font-weight: 600; transition: 0.3s;
+        }
+
+        .btn-logout:hover { background: #fecaca; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Galaktika</div>
+        <button class="profile-trigger" onclick="toggleProfile()">👤</button>
+    </nav>
+
+    <div class="overlay" id="overlay" onclick="toggleProfile()"></div>
+
+    <div class="profile-modal" id="profileModal">
+        <div style="text-align:center; margin-bottom:20px;">
+            <div style="width:70px; height:70px; background:var(--primary); border-radius:50%; margin:0 auto 15px; display:flex; align-items:center; justify-content:center; color:white; font-size:1.8rem; font-weight:600; box-shadow: 0 10px 20px rgba(99,102,241,0.3);">
+                {{ user.first_name|slice:":1" }}
+            </div>
+            <h3 style="margin:0; font-size: 1.4rem;">{{ user.first_name }}</h3>
+            <p style="color:#64748b; font-size:0.9rem; margin-top:5px;">@{{ user.username }}</p>
+        </div>
+        <div style="font-size: 0.95rem; color: #475569; border-top: 1px solid #f1f5f9; padding-top: 15px;">
+            <p>📧 {{ user.email }}</p>
+            <p>🎂 <span id="displayAge">...</span> yosh</p>
+        </div>
+        <a href="{% url 'logout' %}" class="btn-logout">Chiqish</a>
+    </div>
+
+    <div class="search-container">
+        <form method="get" class="search-wrapper">
+            <input type="text" name="q" class="search-input" placeholder="Kitob qidirish..." autocomplete="off">
+            <button type="submit" class="btn-search">Qidirish</button>
+        </form>
+    </div>
+
+    <main class="books-grid">
+        {% for i in kitoblar %}
+        <article class="book-card">
+            {% if i.sale > 0 %}
+                <div class="sale-badge">-{{ i.sale }}%</div>
+            {% endif %}
+            
+            <div class="book-img-box">
+                {% if i.image %} 
+                    <img src="{{ i.image.url }}" alt="{{ i.name }}">
+                {% elif i.images.all %} 
+                    <img src="{{ i.images.first.image.url }}" alt="{{ i.name }}">
+                {% else %}
+                    <img src="https://via.placeholder.com/300x400?text=Rasm+yoq" alt="No image">
+                {% endif %}
+            </div>
+
+            <div class="card-content">
+                <span class="janr-tag">{{ i.janr }}</span>
+                <h3 class="book-title">{{ i.name }}</h3>
+                <div style="color: #64748b; font-size: 0.9rem; margin-bottom: 15px;">✍️ {{ i.author }}</div>
+                <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">
+                    {{ i.about|truncatechars:80 }}
+                </p>
+                <div class="card-footer">
+                    <div class="price-tag">{{ i.price }} <small style="font-size: 0.7rem; color: #94a3b8;">SO'M</small></div>
+                    <a href="/book/{{ i.id }}/" class="btn-open">→</a>
+                </div>
+            </div>
+        </article>
+        {% empty %}
+        <div style="grid-column: 1/-1; text-align: center; padding: 100px 20px; color: #94a3b8;">
+            <h3>📚 Kitoblar topilmadi.</h3>
+        </div>
+        {% endfor %}
+    </main>
+
+    <script>
+        // 1. Yoshni hozirgi yildan (2026) ayirib hisoblash
+        function initAge() {
+            const birthYear = parseInt("{{ user.year }}"); // Django-dan kelgan yil
+            const currentYear = new Date().getFullYear(); // 2026-yilni oladi
+            
+            if (!isNaN(birthYear) && birthYear > 0) {
+                const age = currentYear - birthYear;
+                document.getElementById('displayAge').innerText = age;
+            } else {
+                document.getElementById('displayAge').innerText = "—";
+            }
+        }
+
+        // 2. Modalni ochish/yopish funksiyasi
+        function toggleProfile() {
+            const modal = document.getElementById('profileModal');
+            const overlay = document.getElementById('overlay');
+            const isOpen = modal.style.display === 'block';
+            
+            modal.style.display = isOpen ? 'none' : 'block';
+            overlay.style.display = isOpen ? 'none' : 'block';
+        }
+
+        // Sahifa yuklanganda yoshni hisoblashni ishga tushirish
+        window.onload = initAge;
+    </script>
+</body>
+</html>

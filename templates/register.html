@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaktika - Ro'yxatdan o'tish</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --purple: #7b2cbf; --orange: #ff7b00; --yellow: #ffca3a;
+            --black: #1a1a1a; --bg: #f4f7f6; --error-red: #d90429;
+        }
+
+        body {
+            margin: 0; display: flex; justify-content: center; align-items: center;
+            height: 100vh; background: var(--bg); font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+
+        .login-card {
+            display: flex; width: 900px; height: 680px;
+            background: white; border-radius: 30px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.1); overflow: hidden;
+        }
+
+        /* Xatolik xabari uchun stillar */
+        .alert-container {
+            margin-bottom: 15px;
+        }
+        .alert {
+            padding: 12px;
+            border-radius: 10px;
+            background-color: #ffe5ec;
+            color: var(--error-red);
+            font-size: 13px;
+            text-align: center;
+            border: 1px solid #ffb3c1;
+            animation: shake 0.5s ease-in-out;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .visual-side {
+            flex: 1.2; background: #e0e4e8; position: relative;
+            display: flex; justify-content: center; align-items: flex-end;
+            padding-bottom: 40px;
+        }
+
+        .character { 
+            position: absolute; border-radius: 100px 100px 15px 15px; 
+            transition: transform 0.1s ease-out; display: flex; justify-content: center;
+        }
+
+        .purple-char { width: 90px; height: 260px; background: var(--purple); left: 100px; bottom: 100px; z-index: 2; }
+        .orange-char { width: 180px; height: 140px; background: var(--orange); left: 40px; bottom: 40px; z-index: 3; border-radius: 90px 90px 25px 25px; }
+        .black-char { width: 70px; height: 180px; background: var(--black); left: 210px; bottom: 60px; z-index: 1; }
+        .yellow-char { width: 100px; height: 100px; background: var(--yellow); left: 270px; bottom: 40px; z-index: 2; border-radius: 50px 50px 10px 10px; }
+
+        .eyes-container { display: flex; gap: 18px; margin-top: 35px; }
+        .eye { 
+            width: 18px; height: 18px; background: white; border-radius: 50%; 
+            position: relative; display: flex; align-items: center; justify-content: center; 
+            overflow: hidden; transition: all 0.3s ease;
+        }
+        .pupil { width: 8px; height: 8px; background: black; border-radius: 50%; position: absolute; }
+
+        .form-side { flex: 1; padding: 40px 60px; display: flex; flex-direction: column; justify-content: center; background: white; }
+        h2 { font-size: 28px; margin: 0; color: #1a1a1a; }
+        p { color: #888; margin-bottom: 25px; font-size: 14px; }
+
+        .input-group { margin-bottom: 12px; position: relative; }
+        input, select { 
+            width: 100%; padding: 10px 0; border: none; 
+            border-bottom: 2px solid #eee; outline: none; font-size: 15px; 
+            transition: border-color 0.3s; background: transparent;
+            font-family: inherit;
+        }
+        input:focus, select:focus { border-bottom-color: var(--purple); }
+        
+        .pass-toggle { position: absolute; right: 0; top: 10px; cursor: pointer; width: 20px; height: 20px; z-index: 10; }
+        .pass-toggle svg { width: 100%; height: 100%; fill: #bbb; }
+
+        .btn-login { 
+            background: var(--black); color: white; border: none; 
+            padding: 15px; border-radius: 12px; font-size: 16px; 
+            font-weight: 600; cursor: pointer; margin-top: 20px; transition: 0.3s;
+        }
+        .btn-login:hover { background: var(--purple); transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <div class="visual-side">
+        <div class="character orange-char" data-speed="0.05">
+            <div class="eyes-container"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div>
+        </div>
+        <div class="character purple-char" data-speed="0.03">
+            <div class="eyes-container"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div>
+        </div>
+        <div class="character black-char" data-speed="0.02">
+            <div class="eyes-container"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div>
+        </div>
+        <div class="character yellow-char" data-speed="0.04">
+            <div class="eyes-container"><div class="eye" style="width:12px; height:12px"><div class="pupil"></div></div></div>
+        </div>
+    </div>
+
+    <div class="form-side">
+        {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <h2>Ro'yxatdan o'tish</h2>
+        <p>Galaktika loyihasi uchun ma'lumotlarni kiriting</p>
+        
+        <form method="post" action="{% url 'create_user' %}">
+            {% csrf_token %}
+            
+            <div class="input-group">
+                <input type="text" name="first_name" placeholder="Ism" required>
+            </div>
+
+            <div class="input-group">
+                <input type="text" name="last_name" placeholder="Familiya" required>
+            </div>
+
+            <div class="input-group">
+                <select name="year" id="yearSelect" required>
+                    <option value="" disabled selected>Tug'ilgan yilingizni tanlang</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <input type="email" name="email" placeholder="Email" required>
+            </div>
+
+            <div class="input-group">
+                <input type="text" name="username" placeholder="Username" required>
+            </div>
+
+            <div class="input-group">
+                <input type="password" name="password" id="password" placeholder="Parol" required>
+                <div class="pass-toggle" id="toggleBtn">
+                    <svg id="eyeIcon" viewBox="0 0 24 24">
+                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-login">Ro'yxatdan o'tish</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Yilni to'ldirish
+    const yearSelect = document.getElementById('yearSelect');
+    const thisYear = new Date().getFullYear();
+    for (let y = thisYear - 5; y >= 1950; y--) {
+        let opt = document.createElement('option');
+        opt.value = y;
+        opt.text = y;
+        yearSelect.appendChild(opt);
+    }
+
+    // Ko'zlar harakati va boshqa JS kodingiz o'zgarishsiz qoladi
+    const characters = document.querySelectorAll('.character');
+    const pupils = document.querySelectorAll('.pupil');
+    const eyes = document.querySelectorAll('.eye');
+    const passInput = document.getElementById('password');
+    const toggleBtn = document.getElementById('toggleBtn');
+
+    document.addEventListener('mousemove', (e) => {
+        const x = e.clientX;
+        const y = e.clientY;
+
+        characters.forEach(char => {
+            const speed = char.getAttribute('data-speed');
+            const xMove = (window.innerWidth / 2 - x) * speed;
+            const yMove = (window.innerHeight / 2 - y) * speed;
+            char.style.transform = `translate(${-xMove}px, ${-yMove}px)`;
+        });
+
+        if (passInput.type === 'password') {
+            pupils.forEach(pupil => {
+                const rect = pupil.getBoundingClientRect();
+                const pX = rect.left + rect.width / 2;
+                const pY = rect.top + rect.height / 2;
+                const angle = Math.atan2(y - pY, x - pX);
+                pupil.style.transform = `translate(${Math.cos(angle) * 5}px, ${Math.sin(angle) * 5}px)`;
+            });
+        }
+    });
+
+    toggleBtn.addEventListener('click', () => {
+        const isShowing = passInput.type === 'text';
+        passInput.type = isShowing ? 'password' : 'text';
+        eyes.forEach(eye => { 
+            eye.style.height = isShowing ? '18px' : '2px'; 
+            eye.style.borderRadius = isShowing ? '50%' : '0';
+        });
+        pupils.forEach(p => p.style.opacity = isShowing ? '1' : '0');
+    });
+</script>
+
+</body>
+</html>

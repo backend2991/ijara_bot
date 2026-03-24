@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaktika - Olami</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --purple: #7b2cbf;
+            --black: #1a1a1a;
+            --white: #ffffff;
+            --gray: #f8f9fa;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--white);
+            color: var(--black);
+        }
+
+        /* Navbar qismi */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(255, 255, 255, 0.95);
+            position: fixed;
+            top: 0; width: 100%;
+            box-sizing: border-box;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--purple);
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--black);
+            margin-left: 30px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn-signin {
+            text-decoration: none;
+            color: var(--black);
+            font-weight: 600;
+        }
+
+        .btn-signup {
+            text-decoration: none;
+            background: var(--purple);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-signup:hover {
+            box-shadow: 0 5px 15px rgba(123, 44, 191, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Hero (Reklama) qismi */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 0 10%;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #7b2cbf, #ff7b00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #555;
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+
+        .cta-btn {
+            background: var(--black);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .cta-btn:hover {
+            background: var(--purple);
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#" class="logo">GALAKTIKA</a>
+        
+        <div class="nav-links">
+            <a href="#">Xizmatlar</a>
+            <a href="#">API</a>
+            <a href="#">Haqimizda</a>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="{% url 'login' %}" class="btn-signin">Sign In</a>
+            <a href="{% url 'create_user' %}" class="btn-signup">Sign Up</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>Kelajak API-lari Shu Yerda</h1>
+        <p>Galaktika orqali o'z loyihalaringizni eng tezkor va xavfsiz backend tizimlariga ulang. Biz bilan dasturlash yanada oson!</p>
+        <a href="{% url 'create_user' %}" class="cta-btn">Hozir Boshlash</a>
+    </div>
+
+</body>
+</html>

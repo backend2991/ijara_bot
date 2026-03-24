@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirish - Galaktika</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --purple: #7b2cbf; --black: #1a1a1a; --orange: #ff7b00; --yellow: #ffca3a; 
+            --bg: #f4f7f6; --error: #e74c3c;
+        }
+
+        body {
+            margin: 0; display: flex; justify-content: center; align-items: center;
+            height: 100vh; background: var(--bg); font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+
+        .login-card {
+            display: flex; width: 850px; height: 520px;
+            background: white; border-radius: 30px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.1); overflow: hidden;
+        }
+
+        /* Chap tomon - Vizual qism */
+        .visual-side {
+            flex: 1.2; background: #e0e4e8; position: relative;
+            display: flex; justify-content: center; align-items: flex-end;
+            padding-bottom: 40px;
+        }
+
+        .character { 
+            position: absolute; border-radius: 100px 100px 15px 15px; 
+            transition: transform 0.1s ease-out; display: flex; justify-content: center;
+        }
+
+        /* Shakllar va ularning joylashuvi */
+        .purple-char { width: 90px; height: 260px; background: var(--purple); left: 110px; bottom: 100px; z-index: 2; }
+        .orange-char { width: 180px; height: 140px; background: var(--orange); left: 50px; bottom: 40px; z-index: 4; border-radius: 90px 90px 25px 25px; }
+        .black-char { width: 70px; height: 180px; background: var(--black); left: 220px; bottom: 60px; z-index: 1; }
+        .yellow-char { width: 100px; height: 100px; background: var(--yellow); left: 280px; bottom: 40px; z-index: 3; border-radius: 50px 50px 15px 15px; }
+
+        .eye { 
+            width: 18px; height: 18px; background: white; border-radius: 50%; 
+            position: relative; margin-top: 35px; display: flex; align-items: center; justify-content: center;
+        }
+        .yellow-char .eye { margin-top: 25px; } /* Kichik shakl uchun ko'zni biroz balandlatish */
+        
+        .pupil { width: 8px; height: 8px; background: black; border-radius: 50%; position: absolute; }
+
+        /* O'ng tomon - Forma qismi */
+        .form-side { flex: 1; padding: 40px 60px; display: flex; flex-direction: column; justify-content: center; }
+        h2 { font-size: 28px; margin: 0; color: var(--black); }
+        p { color: #888; margin-bottom: 25px; font-size: 14px; }
+
+        .alert {
+            padding: 10px; background: #fdeded; color: var(--error);
+            border-radius: 10px; font-size: 13px; margin-bottom: 15px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .input-group { margin-bottom: 20px; }
+        input { 
+            width: 100%; padding: 12px 0; border: none; 
+            border-bottom: 2px solid #eee; outline: none; font-size: 15px; 
+            transition: 0.3s; font-family: inherit;
+        }
+        input:focus { border-bottom-color: var(--purple); }
+        
+        .btn-submit { 
+            background: var(--black); color: white; border: none; 
+            padding: 15px; border-radius: 12px; font-size: 16px; 
+            font-weight: 600; cursor: pointer; transition: 0.3s; width: 100%;
+        }
+        .btn-submit:hover { background: var(--purple); transform: translateY(-2px); }
+
+        .footer-links { margin-top: 20px; text-align: center; font-size: 13px; color: #777; }
+        .footer-links a { color: var(--purple); text-decoration: none; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <div class="visual-side">
+        <div class="character orange-char" data-speed="0.05">
+            <div style="display:flex; gap:10px"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div>
+        </div>
+        <div class="character purple-char" data-speed="0.03">
+            <div style="display:flex; gap:10px"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div>
+        </div>
+        <div class="character black-char" data-speed="0.02">
+            <div style="display:flex; gap:10px"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div>
+        </div>
+        <div class="character yellow-char" data-speed="0.04">
+            <div style="display:flex; gap:10px"><div class="eye"><div class="pupil"></div></div></div>
+        </div>
+    </div>
+
+    <div class="form-side">
+        <h2>Xush kelibsiz!</h2>
+        <p>Galaktika profilingizga kiring</p>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" name="username" placeholder="Username" required autocomplete="off">
+            </div>
+            <div class="input-group">
+                <input type="password" name="password" placeholder="Parol" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Tizimga kirish</button>
+            
+            <div class="footer-links">
+                Profilingiz yo'qmi? <a href="{% url 'register' %}">Ro'yxatdan o'ting</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const characters = document.querySelectorAll('.character');
+    const pupils = document.querySelectorAll('.pupil');
+
+    document.addEventListener('mousemove', (e) => {
+        const x = (window.innerWidth / 2 - e.clientX);
+        const y = (window.innerHeight / 2 - e.clientY);
+
+        characters.forEach(char => {
+            const speed = char.getAttribute('data-speed');
+            char.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+        });
+
+        pupils.forEach(pupil => {
+            const rect = pupil.getBoundingClientRect();
+            const pupilX = rect.left + rect.width / 2;
+            const pupilY = rect.top + rect.height / 2;
+            const angle = Math.atan2(e.clientY - pupilY, e.clientX - pupilX);
+            const distance = 5;
+            
+            pupil.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
+        });
+    });
+</script>
+
+</body>
+</html> 
